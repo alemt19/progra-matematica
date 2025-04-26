@@ -1,7 +1,9 @@
-import numpy as np
-from scipy.optimize import linear_sum_assignment
+import numpy as np # Importar numpy para operaciones con matrices
+from scipy.optimize import linear_sum_assignment # Importar el método húngaro para la asignación óptima
+# ------------------ Módulo de Asignación de Solicitudes ------------------
 
-class Servidor:
+# Definición de clases para Servidor y Solicitud
+class Servidor:# Clase Servidor para representar un servidor en la nube
     def __init__(self, id, capacidad):
         """
         Inicializa un nuevo servidor.
@@ -51,7 +53,7 @@ class Solicitud:
         """
         return f"Solicitud {self.id}: Req {self.requerimiento}, Prio {self.prioridad}"
 
-class AsignadorSolicitudes:
+class AsignadorSolicitudes: # Asignador de solicitudes a servidores
     def __init__(self, servidores, solicitudes, matriz_costos):
         """
         Inicializa el asignador de solicitudes.
