@@ -1,5 +1,6 @@
-import numpy as np
+import numpy as np # Importar numpy para operaciones con matrices
 
+# Este módulo implementa un sistema de asignación de tareas utilizando el método de transporte.
 class ProblemaTransporte:
     def __init__(self, costos, oferta, demanda):
         self.costos_originales = np.array(costos)
@@ -27,6 +28,7 @@ class ProblemaTransporte:
             return solucion[:, :-1]
         return solucion
 
+# Este módulo implementa el solucionador del problema de transporte utilizando diferentes métodos.
 class SolucionadorTransporte:
     def __init__(self, metodo='esquina_noroeste'):
         self.metodo = metodo
@@ -107,7 +109,8 @@ class SolucionadorTransporte:
                 costos[:, j] = np.inf
                 
         return problema.matriz_original(solucion)
-
+    
+# Este módulo maneja la entrada de datos desde un archivo o desde la consola.
 class ManejadorDatos:
     @staticmethod
     def desde_archivo(ruta):

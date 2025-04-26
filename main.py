@@ -13,6 +13,7 @@ def ejecutar_modulo2():
 # Función principal que controla el flujo del programa
 def main():
     
+    
     while True:
         print("\n¿Qué módulo desea probar?")
         print("1. Módulo 1")
