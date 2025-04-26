@@ -81,33 +81,60 @@ class SolucionadorTransporte:
 
     def _vogel(self, problema):
         solucion = np.zeros((len(problema.oferta), len(problema.demanda)))
-        costos = problema.costos.astype(float).copy()  # Conversión a float
-        
+        costos = problema.costos.astype(float).copy()
+        costos[costos == 0] = np.inf  # Evitar selección de celdas agotadas
+    
         while True:
-            dif_filas = np.diff(np.partition(costos, 1, axis=1)[:, :2], axis=1).flatten()
-            dif_cols = np.diff(np.partition(costos, 1, axis=0)[:2, :], axis=0).flatten()
+            # Calcular penalizaciones para filas
+            dif_filas = []
+            for fila in costos:
+                # Filtrar valores infinitos y ordenar
+                valores_validos = np.sort(fila[fila < np.inf])
+                if len(valores_validos) >= 2:
+                    dif = valores_validos[1] - valores_validos[0]
+                else:
+                    dif = -np.inf
+                dif_filas.append(dif)
+        
+            # Calcular penalizaciones para columnas
+            dif_cols = []
+            for col in costos.T:
+                # Filtrar valores infinitos y ordenar
+                valores_validos = np.sort(col[col < np.inf])
+                if len(valores_validos) >= 2:
+                    dif = valores_validos[1] - valores_validos[0]
+                else:
+                    dif = -np.inf
+                dif_cols.append(dif)
+        
+            # Encontrar máxima diferencia
+            max_dif_filas = np.max(dif_filas)
+            max_dif_cols = np.max(dif_cols)
+        
+            # Condición de terminación
+            if max_dif_filas == -np.inf and max_dif_cols == -np.inf:
+                break
             
-            max_dif = max(np.max(dif_filas), np.max(dif_cols))
-            
-            if max_dif == -np.inf: break
-            
-            if np.max(dif_filas) >= np.max(dif_cols):
+            # Seleccionar dirección de máxima penalización
+            if max_dif_filas >= max_dif_cols:
                 i = np.argmax(dif_filas)
                 j = np.argmin(costos[i])
             else:
                 j = np.argmax(dif_cols)
                 i = np.argmin(costos[:, j])
-                
+            
+            # Realizar asignación
             cantidad = min(problema.oferta[i], problema.demanda[j])
             solucion[i][j] = cantidad
             problema.oferta[i] -= cantidad
             problema.demanda[j] -= cantidad
-            
+        
+            # Actualizar costos
             if problema.oferta[i] == 0:
                 costos[i, :] = np.inf
             if problema.demanda[j] == 0:
                 costos[:, j] = np.inf
-                
+            
         return problema.matriz_original(solucion)
     
 # Este módulo maneja la entrada de datos desde un archivo o desde la consola.
