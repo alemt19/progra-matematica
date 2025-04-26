@@ -1,5 +1,7 @@
 # main.py
 
+# Este script permite al usuario seleccionar entre dos módulos para ejecutar y probar su funcionalidad.
+# Los módulos son 'modulo1' y 'modulo2', cada uno con su propia función main().
 def ejecutar_modulo1():
     import modulo1
     modulo1.main()
@@ -8,7 +10,9 @@ def ejecutar_modulo2():
     import modulo2
     modulo2.main()
 
+# Función principal que controla el flujo del programa
 def main():
+    
     while True:
         print("\n¿Qué módulo desea probar?")
         print("1. Módulo 1")
